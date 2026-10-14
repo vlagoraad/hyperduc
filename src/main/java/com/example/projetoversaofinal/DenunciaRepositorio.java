@@ -1,6 +1,6 @@
 package com.example.projetoversaofinal;
 
-/** Template Method: subclasse concreta para denúncias. */
+
 public class DenunciaRepositorio extends RepositorioArquivo<Denuncia> {
 
     @Override
@@ -13,7 +13,7 @@ public class DenunciaRepositorio extends RepositorioArquivo<Denuncia> {
         return item.getId();
     }
 
-    // hook sobrescrito: toda denúncia precisa de motivo
+    
     @Override
     protected void validar(Denuncia item) {
         if (item.getMotivo() == null || item.getMotivo().isBlank()) {

@@ -2,12 +2,7 @@ package com.example.projetoversaofinal;
 
 import java.io.Serializable;
 
-/**
- * PADRÃO STATE – ciclo de vida do Projeto.
- *
- *   Planejamento --iniciar--> Em andamento --concluir--> Concluído
- *   Planejamento / Em andamento --cancelar--> Cancelado
- */
+
 public abstract class EstadoProjeto implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -26,7 +21,7 @@ public abstract class EstadoProjeto implements Serializable {
         return getNome();
     }
 
-    // ===================== estados concretos =====================
+   
 
     public static class Planejamento extends EstadoProjeto {
         public String getNome() { return "Planejamento"; }

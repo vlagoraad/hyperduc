@@ -2,12 +2,7 @@ package com.example.projetoversaofinal;
 
 import java.io.Serializable;
 
-/**
- * PADRÃO STATE – ciclo de vida da Denúncia.
- *
- *   Aberta --analisar--> Em análise --julgarProcedente--> Procedente
- *   Aberta / Em análise --arquivar--> Arquivada
- */
+
 public abstract class EstadoDenuncia implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -26,7 +21,6 @@ public abstract class EstadoDenuncia implements Serializable {
         return getNome();
     }
 
-    // ===================== estados concretos =====================
 
     public static class Aberta extends EstadoDenuncia {
         public String getNome() { return "Aberta"; }

@@ -2,17 +2,7 @@ package com.example.projetoversaofinal;
 
 import java.io.Serializable;
 
-/**
- * PADRÃO STATE – ciclo de vida da Atividade.
- *
- *   Aberta --atribuir--> Atribuída --enviarParaRevisao--> Revisão --aprovar--> Concluída
- *                            ^                               |
- *                            +----------- reprovar ----------+
- *   Aberta / Atribuída / Revisão --cancelar--> Cancelada
- *
- * Por padrão toda transição é proibida; cada estado concreto libera apenas as
- * transições válidas a partir dele.
- */
+
 public abstract class EstadoAtividade implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -33,7 +23,7 @@ public abstract class EstadoAtividade implements Serializable {
         return getNome();
     }
 
-    // ===================== estados concretos =====================
+    
 
     public static class Aberta extends EstadoAtividade {
         public String getNome() { return "Aberta"; }

@@ -3,34 +3,20 @@ package com.example.projetoversaofinal;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/**
- * PADRÃO TEMPLATE METHOD
- *
- * Define, uma única vez, o algoritmo de persistência (CRUD) usado por todas as
- * entidades. Os métodos públicos são "final": a sequência de passos
- * (ler lista -> localizar -> alterar -> gravar) não pode ser mudada pelas subclasses.
- *
- * As subclasses só preenchem os passos que variam:
- *  - getNomeArquivo()  (operação primitiva, obrigatória)
- *  - getId(item)       (operação primitiva, obrigatória)
- *  - validar(item)     (gancho/hook, opcional)
- *
- * O acesso ao disco é delegado ao Singleton GerenciadorArquivo.
- */
+
 public abstract class RepositorioArquivo<T extends Serializable> {
 
     private final GerenciadorArquivo arquivo = GerenciadorArquivo.getInstancia();
 
-    // ---------- passos que cada subclasse define ----------
+   
     protected abstract String getNomeArquivo();
 
     protected abstract Object getId(T item);
 
-    /** Hook: por padrão não valida nada. Subclasses podem sobrescrever. */
+    
     protected void validar(T item) {
     }
 
-    // ---------- métodos-template (algoritmo fixo) ----------
     @SuppressWarnings("unchecked")
     public final ArrayList<T> listar() {
         Object dados = arquivo.ler(getNomeArquivo());

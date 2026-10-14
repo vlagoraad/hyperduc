@@ -43,7 +43,7 @@ public class DenunciaInsercao {
                 int id = Integer.parseInt(txtId.getText().trim());
                 Denuncia d = new Denuncia(id, txtMotivo.getText().trim(), txtDescricao.getText().trim(),
                         txtAlvo.getText().trim(), LocalDate.now());
-                repositorio.adicionar(d); // valida motivo e ID duplicado
+                repositorio.adicionar(d); 
                 mostrarAlerta("Sucesso", "Denúncia registrada com status \"Aberta\".", Alert.AlertType.INFORMATION);
                 txtId.clear();
                 txtMotivo.clear();
