@@ -1,6 +1,6 @@
 package com.example.projetoversaofinal;
 
-/** Template Method: subclasse concreta para colaboradores (ID textual). */
+
 public class ColaboradorRepositorio extends RepositorioArquivo<Colaborador> {
 
     @Override
@@ -13,7 +13,7 @@ public class ColaboradorRepositorio extends RepositorioArquivo<Colaborador> {
         return item.getId();
     }
 
-    // hook sobrescrito: colaborador precisa de ID e nome
+    
     @Override
     protected void validar(Colaborador item) {
         if (item.getId() == null || item.getId().isBlank()) {

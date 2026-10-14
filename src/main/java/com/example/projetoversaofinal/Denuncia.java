@@ -4,12 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-/**
- * Entidade Denúncia: um registro de conduta inadequada envolvendo um projeto,
- * uma atividade ou um colaborador da plataforma.
- *  - Contexto do padrão STATE (EstadoDenuncia).
- *  - Originador do padrão MEMENTO.
- */
+
 public class Denuncia implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -18,7 +13,7 @@ public class Denuncia implements Serializable {
     private int id;
     private String motivo;
     private String descricao;
-    private String alvo;          // ex.: "Projeto 3", "Atividade 12", "Colaborador C01"
+    private String alvo;          
     private LocalDate dataCriacao;
     private EstadoDenuncia estado;
 
@@ -28,10 +23,10 @@ public class Denuncia implements Serializable {
         this.descricao = descricao;
         this.alvo = alvo;
         this.dataCriacao = dataCriacao;
-        this.estado = new EstadoDenuncia.Aberta(); // toda denúncia nasce Aberta
+        this.estado = new EstadoDenuncia.Aberta(); 
     }
 
-    // ---------------- STATE ----------------
+    
     public void analisar()         { estado.analisar(this); }
     public void julgarProcedente() { estado.julgarProcedente(this); }
     public void arquivar()         { estado.arquivar(this); }
@@ -48,7 +43,7 @@ public class Denuncia implements Serializable {
         return estado.getNome();
     }
 
-    // ---------------- MEMENTO ----------------
+   
     public Memento salvarEstado() {
         return new Memento(motivo, descricao, alvo, estado);
     }
@@ -74,7 +69,7 @@ public class Denuncia implements Serializable {
         }
     }
 
-    // ---------------- getters / setters ----------------
+    
     public int getId() { return id; }
     public String getMotivo() { return motivo; }
     public String getDescricao() { return descricao; }

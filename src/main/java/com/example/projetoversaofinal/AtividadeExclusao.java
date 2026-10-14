@@ -78,7 +78,7 @@ public class AtividadeExclusao {
         btnLimpar.setStyle("-fx-background-color: #FF9800; -fx-text-fill: white; -fx-font-weight: bold;");
         btnVoltar.setStyle("-fx-background-color: #9E9E9E; -fx-text-fill: white; -fx-font-weight: bold;");
 
-        // Buscar
+        
         btnBuscar.setOnAction(e -> {
             try {
                 if (txtBuscaId.getText().trim().isEmpty()) {
@@ -94,7 +94,7 @@ public class AtividadeExclusao {
             }
         });
 
-        // Excluir
+        
         btnExcluir.setOnAction(e -> {
             try {
                 int id = Integer.parseInt(txtId.getText().trim());

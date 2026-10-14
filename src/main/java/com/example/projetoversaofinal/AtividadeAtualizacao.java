@@ -13,23 +13,17 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.function.Consumer;
 
-/**
- * Tela de atualização de atividades.
- *  - Edita título, descrição e data.
- *  - Muda o status apenas pelas transições do padrão STATE (botões).
- *  - Permite desfazer a última alteração com o padrão MEMENTO.
- */
+
 public class AtividadeAtualizacao {
 
-    // Caretaker do Memento: estático para o histórico sobreviver à troca de telas
+    
     private static final Historico<Atividade.Memento> HISTORICO = new Historico<>();
 
     private final Stage stage;
     private final AtividadeRepositorio repositorio = new AtividadeRepositorio();
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    private Atividade atual; // atividade carregada na tela
-
+    private Atividade atual;
     private TextField txtId;
     private TextField txtTitulo;
     private TextArea txtDescricao;
@@ -61,7 +55,7 @@ public class AtividadeAtualizacao {
         lblEstado = new Label("-");
         lblEstado.setStyle("-fx-font-weight: bold; -fx-text-fill: #9C27B0;");
 
-        // ---- botões de transição (State) ----
+       
         Button btnAtribuir = new Button("Atribuir");
         Button btnRevisao = new Button("Enviar p/ Revisão");
         Button btnAprovar = new Button("Aprovar");
@@ -139,7 +133,7 @@ public class AtividadeAtualizacao {
         lblEstado.setText(atual.getStatus());
     }
 
-    /** Edita os dados guardando antes um memento (para poder desfazer). */
+    
     private void salvarDados() {
         if (!temAtividadeCarregada()) return;
         try {
@@ -148,32 +142,30 @@ public class AtividadeAtualizacao {
                 mostrarAlerta("Erro", "Todos os campos são obrigatórios!", Alert.AlertType.ERROR);
                 return;
             }
-            HISTORICO.salvar(atual.getId(), atual.salvarEstado());   // Memento
+            HISTORICO.salvar(atual.getId(), atual.salvarEstado());  
             atual.setTitulo(txtTitulo.getText().trim());
             atual.setDescricao(txtDescricao.getText().trim());
             atual.setDataCriacao(data);
-            repositorio.atualizar(atual);                             // Template Method
+            repositorio.atualizar(atual);                            
             mostrarAlerta("Sucesso", "Atividade atualizada!", Alert.AlertType.INFORMATION);
         } catch (DateTimeParseException ex) {
             mostrarAlerta("Erro", "Data inválida! Use dd/MM/yyyy", Alert.AlertType.ERROR);
         }
     }
 
-    /** Aplica uma transição do State. Se for inválida, o estado lança IllegalStateException. */
+   
     private void aplicarTransicao(Consumer<Atividade> transicao) {
         if (!temAtividadeCarregada()) return;
         Atividade.Memento antes = atual.salvarEstado();
         try {
-            transicao.accept(atual);                // State decide se pode
-            HISTORICO.salvar(atual.getId(), antes); // só guarda se a transição deu certo
-            repositorio.atualizar(atual);
+            transicao.accept(atual);                
+            HISTORICO.salvar(atual.getId(), antes);
             preencherCampos();
         } catch (IllegalStateException ex) {
             mostrarAlerta("Transição inválida", ex.getMessage(), Alert.AlertType.WARNING);
         }
     }
-
-    /** Restaura o último memento (dados + status). */
+    
     private void desfazer() {
         if (!temAtividadeCarregada()) return;
         Atividade.Memento anterior = HISTORICO.desfazer(atual.getId());

@@ -43,7 +43,7 @@ public class AtividadeInsercao {
         TextField txtData = new TextField();
         txtData.setPromptText("dd/MM/yyyy");
 
-        // State: toda atividade nasce no estado "Aberta"; o status não é escolhido aqui
+        
         Label lblStatus = new Label("Status inicial:");
         Label lblStatusValor = new Label("Aberta");
 

@@ -10,10 +10,7 @@ import javafx.stage.Stage;
 
 import java.util.function.Consumer;
 
-/**
- * Tela de análise de denúncias: edita os dados, muda o status pelas transições
- * do padrão STATE e desfaz a última alteração com o padrão MEMENTO.
- */
+
 public class DenunciaAtualizacao {
 
     private static final Historico<Denuncia.Memento> HISTORICO = new Historico<>();
@@ -127,7 +124,7 @@ public class DenunciaAtualizacao {
             repositorio.atualizar(atual);
             HISTORICO.salvar(atual.getId(), antes);
             mostrarAlerta("Sucesso", "Denúncia atualizada!", Alert.AlertType.INFORMATION);
-        } catch (IllegalArgumentException ex) {   // hook validar() recusou
+        } catch (IllegalArgumentException ex) {
             atual.restaurarEstado(antes);
             preencherCampos();
             mostrarAlerta("Erro", ex.getMessage(), Alert.AlertType.ERROR);

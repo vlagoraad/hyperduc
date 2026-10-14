@@ -4,11 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-/**
- * Entidade Atividade.
- *  - Contexto do padrão STATE: delega as transições ao seu EstadoAtividade.
- *  - Originador do padrão MEMENTO: cria e restaura snapshots de si mesma.
- */
+
 public class Atividade implements Serializable {
 
     private static final long serialVersionUID = 2L;
@@ -25,17 +21,17 @@ public class Atividade implements Serializable {
         this.titulo = titulo;
         this.descricao = descricao;
         this.dataCriacao = dataCriacao;
-        this.estado = new EstadoAtividade.Aberta(); // toda atividade nasce Aberta
+        this.estado = new EstadoAtividade.Aberta();
     }
 
-    // ---------------- STATE: operações delegadas ao estado atual ----------------
+    
     public void atribuir()          { estado.atribuir(this); }
     public void enviarParaRevisao() { estado.enviarParaRevisao(this); }
     public void aprovar()           { estado.aprovar(this); }
     public void reprovar()          { estado.reprovar(this); }
     public void cancelar()          { estado.cancelar(this); }
 
-    // usado apenas pelos estados para trocar o estado atual
+    
     void setEstado(EstadoAtividade estado) {
         this.estado = estado;
     }
@@ -44,12 +40,12 @@ public class Atividade implements Serializable {
         return estado;
     }
 
-    /** Nome do estado atual (usado pela coluna "Status" da tabela). */
+    
     public String getStatus() {
         return estado.getNome();
     }
 
-    // ---------------- MEMENTO: originador ----------------
+    
     public Memento salvarEstado() {
         return new Memento(titulo, descricao, dataCriacao, estado);
     }
@@ -61,7 +57,7 @@ public class Atividade implements Serializable {
         this.estado = m.estado;
     }
 
-    /** Snapshot imutável. Os campos são privados: só a Atividade consegue lê-los. */
+    
     public static final class Memento {
         private final String titulo;
         private final String descricao;
@@ -76,7 +72,7 @@ public class Atividade implements Serializable {
         }
     }
 
-    // ---------------- getters / setters ----------------
+    
     public int getId() { return id; }
     public String getTitulo() { return titulo; }
     public String getDescricao() { return descricao; }

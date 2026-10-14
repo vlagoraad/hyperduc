@@ -2,10 +2,7 @@ package com.example.projetoversaofinal;
 
 import java.time.LocalDate;
 
-/**
- * Demonstração em console dos quatro padrões, sem abrir a interface gráfica.
- * Útil na apresentação: mostra Singleton, Template Method, State e Memento em ação.
- */
+
 public class DemonstracaoPadroes {
 
     public static void main(String[] args) {
