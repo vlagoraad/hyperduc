@@ -1,6 +1,6 @@
 package com.example.projetoversaofinal;
 
-/** Template Method: subclasse concreta para projetos. */
+
 public class ProjetoRepositorio extends RepositorioArquivo<Projeto> {
 
     @Override

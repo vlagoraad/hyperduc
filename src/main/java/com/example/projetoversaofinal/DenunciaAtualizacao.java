@@ -131,18 +131,27 @@ public class DenunciaAtualizacao {
         }
     }
 
-    private void aplicarTransicao(Consumer<Denuncia> transicao) {
-        if (!temDenunciaCarregada()) return;
-        Denuncia.Memento antes = atual.salvarEstado();
-        try {
-            transicao.accept(atual);
-            HISTORICO.salvar(atual.getId(), antes);
-            repositorio.atualizar(atual);
-            preencherCampos();
-        } catch (IllegalStateException ex) {
-            mostrarAlerta("Transição inválida", ex.getMessage(), Alert.AlertType.WARNING);
-        }
+    
+private void aplicarTransicao(Consumer<Denuncia> transicao) {
+    if (!temDenunciaCarregada()) return;
+
+    Denuncia.Memento antes = atual.salvarEstado();
+
+    try {
+        transicao.accept(atual);
+        repositorio.atualizar(atual);
+        HISTORICO.salvar(atual.getId(), antes);
+        preencherCampos();
+
+    } catch (IllegalStateException ex) {
+        mostrarAlerta(
+            "Transição inválida",
+            ex.getMessage(),
+            Alert.AlertType.WARNING
+        );
     }
+}
+
 
     private void desfazer() {
         if (!temDenunciaCarregada()) return;

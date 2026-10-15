@@ -4,11 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-/**
- * Entidade Projeto.
- *  - Contexto do padrão STATE (EstadoProjeto).
- *  - Originador do padrão MEMENTO.
- */
+
 public class Projeto implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -25,10 +21,10 @@ public class Projeto implements Serializable {
         this.titulo = titulo;
         this.descricao = descricao;
         this.dataCriacao = dataCriacao;
-        this.estado = new EstadoProjeto.Planejamento(); // todo projeto nasce em Planejamento
+        this.estado = new EstadoProjeto.Planejamento();
     }
 
-    // ---------------- STATE ----------------
+    
     public void iniciar()  { getEstado().iniciar(this); }
     public void concluir() { getEstado().concluir(this); }
     public void cancelar() { getEstado().cancelar(this); }
@@ -38,7 +34,7 @@ public class Projeto implements Serializable {
     }
 
     public EstadoProjeto getEstado() {
-        // projetos gravados antes da refatoração não tinham estado
+        
         if (estado == null) {
             estado = new EstadoProjeto.Planejamento();
         }
@@ -49,7 +45,7 @@ public class Projeto implements Serializable {
         return getEstado().getNome();
     }
 
-    // ---------------- MEMENTO ----------------
+    
     public Memento salvarEstado() {
         return new Memento(titulo, descricao, dataCriacao, getEstado());
     }
@@ -75,7 +71,7 @@ public class Projeto implements Serializable {
         }
     }
 
-    // ---------------- getters / setters ----------------
+    
     public int getId() { return id; }
     public String getTitulo() { return titulo; }
     public String getDescricao() { return descricao; }

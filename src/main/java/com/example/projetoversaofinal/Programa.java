@@ -271,11 +271,15 @@ public class Programa extends Application {
         stage.setTitle("Consultar Atividade - HYPERDUC!");
     }
 
+    
     private void abrirAtividadeAtualizacao(Stage stage) {
-        AtividadeAtualizacao tela = new AtividadeAtualizacao(stage);
-        stage.setScene(tela.criarCena());
-        stage.setTitle("Atualizar Atividade - HYPERDUC!");
-    }
+    System.out.println("Clique em Atualizar Atividade detectado!");
+
+    AtividadeAtualizacao tela = new AtividadeAtualizacao(stage);
+    stage.setScene(tela.criarCena());
+    stage.setTitle("Atualizar Atividade - HYPERDUC!");
+}
+
 
     private void abrirAtividadeExclusao(Stage stage) {
         AtividadeExclusao tela = new AtividadeExclusao(stage);
