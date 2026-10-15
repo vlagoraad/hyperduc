@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 
 public class AtividadeAtualizacao {
 
-    
+
     private static final Historico<Atividade.Memento> HISTORICO = new Historico<>();
 
     private final Stage stage;
@@ -55,7 +55,7 @@ public class AtividadeAtualizacao {
         lblEstado = new Label("-");
         lblEstado.setStyle("-fx-font-weight: bold; -fx-text-fill: #9C27B0;");
 
-       
+
         Button btnAtribuir = new Button("Atribuir");
         Button btnRevisao = new Button("Enviar p/ Revisão");
         Button btnAprovar = new Button("Aprovar");
@@ -133,76 +133,73 @@ public class AtividadeAtualizacao {
         lblEstado.setText(atual.getStatus());
     }
 
-    
-    
+    // Grava as alterações de título, descrição e data.
+    // O memento é tirado antes de mexer na atividade: ele serve tanto para o botão
+    // "Desfazer" quanto para voltar atrás se a gravação no arquivo falhar.
     private void salvarDados() {
-    if (!temAtividadeCarregada()) return;
+        if (!temAtividadeCarregada()) return;
 
-    try {
-        LocalDate data = LocalDate.parse(txtData.getText().trim(), formatter);
+        try {
+            LocalDate data = LocalDate.parse(txtData.getText().trim(), formatter);
 
-        if (txtTitulo.getText().trim().isEmpty()
-                || txtDescricao.getText().trim().isEmpty()) {
-            mostrarAlerta("Erro", "Todos os campos são obrigatórios!",
-                    Alert.AlertType.ERROR);
-            return;
+            if (txtTitulo.getText().trim().isEmpty() || txtDescricao.getText().trim().isEmpty()) {
+                mostrarAlerta("Erro", "Todos os campos são obrigatórios!", Alert.AlertType.ERROR);
+                return;
+            }
+
+            Atividade.Memento anterior = atual.salvarEstado();
+
+            atual.setTitulo(txtTitulo.getText().trim());
+            atual.setDescricao(txtDescricao.getText().trim());
+            atual.setDataCriacao(data);
+
+            if (!repositorio.atualizar(atual)) {
+                // Não gravou (a atividade pode ter sido excluída em outra tela):
+                // a própria atividade se restaura a partir do memento.
+                atual.restaurarEstado(anterior);
+                preencherCampos();
+                mostrarAlerta("Erro", "Não foi possível atualizar a atividade.", Alert.AlertType.ERROR);
+                return;
+            }
+
+            // Só entra no histórico o que de fato foi salvo.
+            HISTORICO.salvar(atual.getId(), anterior);
+            preencherCampos();
+            mostrarAlerta("Sucesso", "Atividade atualizada!", Alert.AlertType.INFORMATION);
+
+        } catch (DateTimeParseException ex) {
+            mostrarAlerta("Erro", "Data inválida! Use dd/MM/yyyy", Alert.AlertType.ERROR);
         }
-
-        Atividade.Memento anterior = atual.salvarEstado();
-
-        String tituloAnterior = atual.getTitulo();
-        String descricaoAnterior = atual.getDescricao();
-        LocalDate dataAnterior = atual.getDataCriacao();
-
-        atual.setTitulo(txtTitulo.getText().trim());
-        atual.setDescricao(txtDescricao.getText().trim());
-        atual.setDataCriacao(data);
-
-        if (!repositorio.atualizar(atual)) {
-            atual.setTitulo(tituloAnterior);
-            atual.setDescricao(descricaoAnterior);
-            atual.setDataCriacao(dataAnterior);
-
-            mostrarAlerta("Erro", "Não foi possível atualizar a atividade.",
-                    Alert.AlertType.ERROR);
-            return;
-        }
-
-        HISTORICO.salvar(atual.getId(), anterior);
-        preencherCampos();
-
-        mostrarAlerta("Sucesso", "Atividade atualizada!",
-                Alert.AlertType.INFORMATION);
-
-    } catch (DateTimeParseException ex) {
-        mostrarAlerta("Erro", "Data inválida! Use dd/MM/yyyy",
-                Alert.AlertType.ERROR);
     }
-}
 
-   
-    
+    // Muda o status da atividade (Atribuir, Aprovar etc.).
+    // Quem decide se a mudança é permitida é o estado atual (padrão State);
+    // se não for, ele lança IllegalStateException e nada é alterado.
     private void aplicarTransicao(Consumer<Atividade> transicao) {
         if (!temAtividadeCarregada()) return;
 
-    Atividade.Memento antes = atual.salvarEstado();
+        Atividade.Memento antes = atual.salvarEstado();
 
-    try {
-        transicao.accept(atual);
-        repositorio.atualizar(atual);
-        HISTORICO.salvar(atual.getId(), antes);
-        preencherCampos();
+        try {
+            transicao.accept(atual);
 
-    } catch (IllegalStateException ex) {
-        mostrarAlerta(
-            "Transição inválida",
-            ex.getMessage(),
-            Alert.AlertType.WARNING
-        );
+            // Sem esta gravação o novo status aparece na tela mas some ao reabrir.
+            if (!repositorio.atualizar(atual)) {
+                atual.restaurarEstado(antes);
+                preencherCampos();
+                mostrarAlerta("Erro", "Não foi possível salvar o novo status.", Alert.AlertType.ERROR);
+                return;
+            }
+
+            HISTORICO.salvar(atual.getId(), antes);
+            preencherCampos();
+
+        } catch (IllegalStateException ex) {
+            mostrarAlerta("Transição inválida", ex.getMessage(), Alert.AlertType.WARNING);
+        }
     }
-}
 
-    
+
     private void desfazer() {
         if (!temAtividadeCarregada()) return;
         Atividade.Memento anterior = HISTORICO.desfazer(atual.getId());

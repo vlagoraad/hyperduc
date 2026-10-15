@@ -3,20 +3,22 @@ package com.example.projetoversaofinal;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+// Template Method: o passo a passo do CRUD (ler a lista, achar pelo ID, alterar,
 
 public abstract class RepositorioArquivo<T extends Serializable> {
 
     private final GerenciadorArquivo arquivo = GerenciadorArquivo.getInstancia();
 
-   
+    // Passos que cada repositório concreto precisa informar.
     protected abstract String getNomeArquivo();
 
     protected abstract Object getId(T item);
 
-    
+    // Gancho opcional: por padrão aceita tudo; Denuncia e Colaborador sobrescrevem.
     protected void validar(T item) {
     }
 
+    // Os métodos abaixo são final para que nenhuma subclasse mude a ordem dos passos.
     @SuppressWarnings("unchecked")
     public final ArrayList<T> listar() {
         Object dados = arquivo.ler(getNomeArquivo());

@@ -142,7 +142,7 @@ public class Programa extends Application {
         btnConsultarProjeto.setOnAction(e -> abrirProjetoConsulta(stage));
         btnAtualizarProjeto.setOnAction(e -> abrirProjetoAtualizacao(stage));
         btnExcluirProjeto.setOnAction(e -> abrirProjetoExclusao(stage));
-        
+
         btnInserirUsuario.setOnAction(e -> abrirColaboradorInsercao(stage));
         btnConsultarUsuario.setOnAction(e -> abrirColaboradorConsulta(stage));
         btnAtualizarUsuario.setOnAction(e -> abrirColaboradorAtualizacao(stage));
@@ -271,15 +271,11 @@ public class Programa extends Application {
         stage.setTitle("Consultar Atividade - HYPERDUC!");
     }
 
-    
     private void abrirAtividadeAtualizacao(Stage stage) {
-    System.out.println("Clique em Atualizar Atividade detectado!");
-
-    AtividadeAtualizacao tela = new AtividadeAtualizacao(stage);
-    stage.setScene(tela.criarCena());
-    stage.setTitle("Atualizar Atividade - HYPERDUC!");
-}
-
+        AtividadeAtualizacao tela = new AtividadeAtualizacao(stage);
+        stage.setScene(tela.criarCena());
+        stage.setTitle("Atualizar Atividade - HYPERDUC!");
+    }
 
     private void abrirAtividadeExclusao(Stage stage) {
         AtividadeExclusao tela = new AtividadeExclusao(stage);

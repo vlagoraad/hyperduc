@@ -4,7 +4,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-
+// Atividade é o contexto do State (delega as transições ao estado atual)
+// e a originadora do Memento (sabe tirar e restaurar o próprio retrato).
 public class Atividade implements Serializable {
 
     private static final long serialVersionUID = 2L;
@@ -24,14 +25,14 @@ public class Atividade implements Serializable {
         this.estado = new EstadoAtividade.Aberta();
     }
 
-    
+
     public void atribuir()          { estado.atribuir(this); }
     public void enviarParaRevisao() { estado.enviarParaRevisao(this); }
     public void aprovar()           { estado.aprovar(this); }
     public void reprovar()          { estado.reprovar(this); }
     public void cancelar()          { estado.cancelar(this); }
 
-    
+
     void setEstado(EstadoAtividade estado) {
         this.estado = estado;
     }
@@ -40,12 +41,12 @@ public class Atividade implements Serializable {
         return estado;
     }
 
-    
+
     public String getStatus() {
         return estado.getNome();
     }
 
-    
+
     public Memento salvarEstado() {
         return new Memento(titulo, descricao, dataCriacao, estado);
     }
@@ -57,7 +58,7 @@ public class Atividade implements Serializable {
         this.estado = m.estado;
     }
 
-    
+
     public static final class Memento {
         private final String titulo;
         private final String descricao;
@@ -72,7 +73,7 @@ public class Atividade implements Serializable {
         }
     }
 
-    
+
     public int getId() { return id; }
     public String getTitulo() { return titulo; }
     public String getDescricao() { return descricao; }

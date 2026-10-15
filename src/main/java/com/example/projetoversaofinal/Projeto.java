@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-
+// Projeto é o contexto do State e o originador do Memento, como Atividade.
 public class Projeto implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -24,7 +24,7 @@ public class Projeto implements Serializable {
         this.estado = new EstadoProjeto.Planejamento();
     }
 
-    
+
     public void iniciar()  { getEstado().iniciar(this); }
     public void concluir() { getEstado().concluir(this); }
     public void cancelar() { getEstado().cancelar(this); }
@@ -34,7 +34,7 @@ public class Projeto implements Serializable {
     }
 
     public EstadoProjeto getEstado() {
-        
+        // Projetos gravados antes da refatoração não tinham estado.
         if (estado == null) {
             estado = new EstadoProjeto.Planejamento();
         }
@@ -45,7 +45,7 @@ public class Projeto implements Serializable {
         return getEstado().getNome();
     }
 
-    
+
     public Memento salvarEstado() {
         return new Memento(titulo, descricao, dataCriacao, getEstado());
     }
@@ -71,7 +71,7 @@ public class Projeto implements Serializable {
         }
     }
 
-    
+
     public int getId() { return id; }
     public String getTitulo() { return titulo; }
     public String getDescricao() { return descricao; }

@@ -2,6 +2,7 @@ package com.example.projetoversaofinal;
 
 import java.io.Serializable;
 
+// State: cada classe interna é um status possível de projeto.
 
 public abstract class EstadoProjeto implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -21,7 +22,7 @@ public abstract class EstadoProjeto implements Serializable {
         return getNome();
     }
 
-   
+    // Estados concretos
 
     public static class Planejamento extends EstadoProjeto {
         public String getNome() { return "Planejamento"; }

@@ -2,7 +2,7 @@ package com.example.projetoversaofinal;
 
 import java.io.Serializable;
 
-
+// State: cada classe interna é um status possível de denúncia.
 public abstract class EstadoDenuncia implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -21,6 +21,7 @@ public abstract class EstadoDenuncia implements Serializable {
         return getNome();
     }
 
+    // Estados concretos
 
     public static class Aberta extends EstadoDenuncia {
         public String getNome() { return "Aberta"; }
